@@ -27,8 +27,25 @@ def endpoint_detection_demo():
         print("请将WAV文件放在 data/audio 目录下")
         return
     
-    # 使用第一个WAV文件
-    wav_file = os.path.join(audio_dir, wav_files[0])
+    # 显示可用的音频文件
+    print("可用的音频文件:")
+    for i, file in enumerate(wav_files):
+        print(f"{i+1}. {file}")
+    
+    # 让用户选择文件
+    while True:
+        try:
+            choice = input(f"\n请选择要分析的文件编号 (1-{len(wav_files)}): ")
+            file_index = int(choice) - 1
+            if 0 <= file_index < len(wav_files):
+                break
+            else:
+                print(f"请输入1到{len(wav_files)}之间的数字")
+        except ValueError:
+            print("请输入有效的数字")
+    
+    # 使用用户选择的文件
+    wav_file = os.path.join(audio_dir, wav_files[file_index])
     print(f"分析文件: {wav_file}")
     
     # 读取音频文件

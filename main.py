@@ -10,19 +10,19 @@ from speech_processing import WAVReader, FrameProcessor, TimeDomainAnalyzer, Dua
 
 def print_menu():
     """打印主菜单"""
-    print("\n" + "=" * 60)
-    print("语音信号处理系统")
-    print("=" * 60)
-    print("1. 基础分析演示")
-    print("2. 窗函数比较")
-    print("3. 端点检测演示")
-    print("4. 完整分析流程")
-    print("5. 语音识别演示")
-    print("6. 分类器对比分析")
-    print("7. 运行测试")
-    print("8. 查看帮助")
-    print("0. 退出程序")
-    print("=" * 60)
+    print("\n" + "=" * 80)
+    print("🎤 语音信号处理系统 | Speech Signal Processing System")
+    print("=" * 80)
+    print("1️⃣  基础分析演示      - Basic Analysis Demo (examples/basic_analysis_demo.py)")
+    print("2️⃣  窗函数比较演示    - Window Function Comparison Demo (examples/window_comparison_demo.py)")
+    print("3️⃣  端点检测演示      - Endpoint Detection Demo (examples/endpoint_detection_demo.py)")
+    print("4️⃣  完整分析流程演示  - Complete Analysis Pipeline Demo (examples/speech_analysis_demo.py)")
+    print("5️⃣  语音识别演示      - Speech Recognition Demo (examples/speech_recognition_demo.py)")
+    print("6️⃣  分类器对比演示    - Classifier Comparison Demo (examples/classifier_comparison_demo.py)")
+    print("7️⃣  运行测试          - Run Tests (tests/)")
+    print("8️⃣  查看帮助          - Show Help")
+    print("0️⃣  退出程序          - Exit Program")
+    print("=" * 80)
 
 
 def check_audio_files():
@@ -64,71 +64,47 @@ def select_audio_file(wav_files):
 
 
 def basic_analysis():
-    """基础分析功能"""
+    """基础分析功能 - 调用examples/basic_analysis_demo.py"""
     print("\n--- 基础分析演示 ---")
-    
-    wav_files = check_audio_files()
-    wav_file = select_audio_file(wav_files)
-    
-    if not wav_file:
-        return
+    print("正在运行基础分析示例程序...")
     
     try:
-        # 读取文件
-        reader = WAVReader(wav_file)
-        audio_data, sample_rate = reader.read()
-        reader.print_info()
+        # 添加examples目录到路径
+        sys.path.append("examples")
         
-        # 分帧处理
-        processor = FrameProcessor(sample_rate, 25.0, 10.0)
-        frames, windowed_frames = processor.process_signal(audio_data, 'hamming')
-        print(f"分帧完成，共 {len(frames)} 帧")
+        # 导入并运行基础分析示例
+        from basic_analysis_demo import basic_analysis_example
+        basic_analysis_example()
         
-        # 时域分析
-        analyzer = TimeDomainAnalyzer(sample_rate, 25.0, 10.0)
-        analysis_result = analyzer.analyze_signal(audio_data, 'hamming')
-        print("时域特征计算完成")
-        
-        # 端点检测
-        detector = DualThresholdEndpointDetector(sample_rate, 25.0, 10.0)
-        endpoint_result = detector.detect_endpoints(audio_data)
-        print(f"端点检测完成，检测到 {len(endpoint_result['endpoints'])} 个语音段")
-        
-        print("基础分析完成！")
-        
+    except ImportError as e:
+        print(f"无法导入基础分析示例: {e}")
+        print("请确保examples/basic_analysis_demo.py文件存在")
     except Exception as e:
-        print(f"分析过程中出现错误: {e}")
+        print(f"运行基础分析示例时出现错误: {e}")
 
 
 def window_comparison():
-    """窗函数比较功能"""
-    print("\n--- 窗函数比较 ---")
-    
-    wav_files = check_audio_files()
-    wav_file = select_audio_file(wav_files)
-    
-    if not wav_file:
-        return
+    """窗函数比较功能 - 调用examples/window_comparison_demo.py"""
+    print("\n--- 窗函数比较演示 ---")
+    print("正在运行窗函数比较示例程序...")
     
     try:
         # 运行窗函数比较示例
         sys.path.append("examples")
-        from window_comparison import window_comparison_example
+        from window_comparison_demo import window_comparison_example
         window_comparison_example()
         
+    except ImportError as e:
+        print(f"无法导入窗函数比较示例: {e}")
+        print("请确保examples/window_comparison_demo.py文件存在")
     except Exception as e:
         print(f"窗函数比较过程中出现错误: {e}")
 
 
 def endpoint_detection():
-    """端点检测功能"""
+    """端点检测功能 - 调用examples/endpoint_detection_demo.py"""
     print("\n--- 端点检测演示 ---")
-    
-    wav_files = check_audio_files()
-    wav_file = select_audio_file(wav_files)
-    
-    if not wav_file:
-        return
+    print("正在运行端点检测示例程序...")
     
     try:
         # 运行端点检测示例
@@ -136,19 +112,17 @@ def endpoint_detection():
         from endpoint_detection_demo import endpoint_detection_demo
         endpoint_detection_demo()
         
+    except ImportError as e:
+        print(f"无法导入端点检测示例: {e}")
+        print("请确保examples/endpoint_detection_demo.py文件存在")
     except Exception as e:
         print(f"端点检测过程中出现错误: {e}")
 
 
 def complete_analysis():
-    """完整分析流程"""
-    print("\n--- 完整分析流程 ---")
-    
-    wav_files = check_audio_files()
-    wav_file = select_audio_file(wav_files)
-    
-    if not wav_file:
-        return
+    """完整分析流程 - 调用examples/speech_analysis_demo.py"""
+    print("\n--- 完整分析流程演示 ---")
+    print("正在运行完整分析示例程序...")
     
     try:
         # 运行完整分析示例
@@ -156,7 +130,7 @@ def complete_analysis():
         from speech_analysis_demo import SpeechAnalysisDemo
         
         demo = SpeechAnalysisDemo()
-        analysis_result = demo.run_complete_analysis(wav_file)
+        analysis_result = demo.run_complete_analysis()
         demo.visualize_complete_analysis(analysis_result)
         
         # 生成报告
@@ -164,19 +138,23 @@ def complete_analysis():
         print(report)
         
         # 保存报告
-        report_file = f"data/results/{os.path.basename(wav_file)}_analysis_report.txt"
+        report_file = f"data/results/complete_analysis_report.txt"
         os.makedirs("data/results", exist_ok=True)
         with open(report_file, 'w', encoding='utf-8') as f:
             f.write(report)
         print(f"\n分析报告已保存到: {report_file}")
         
+    except ImportError as e:
+        print(f"无法导入完整分析示例: {e}")
+        print("请确保examples/speech_analysis_demo.py文件存在")
     except Exception as e:
         print(f"完整分析过程中出现错误: {e}")
 
 
 def speech_recognition():
-    """语音识别功能"""
+    """语音识别功能 - 调用examples/speech_recognition_demo.py"""
     print("\n--- 语音识别演示 ---")
+    print("正在运行语音识别示例程序...")
     
     try:
         # 运行语音识别演示
@@ -185,13 +163,17 @@ def speech_recognition():
         
         speech_recognition_demo()
         
+    except ImportError as e:
+        print(f"无法导入语音识别示例: {e}")
+        print("请确保examples/speech_recognition_demo.py文件存在")
     except Exception as e:
         print(f"语音识别过程中出现错误: {e}")
 
 
 def classifier_comparison():
-    """分类器对比分析功能"""
-    print("\n--- 分类器对比分析 ---")
+    """分类器对比分析功能 - 调用examples/classifier_comparison_demo.py"""
+    print("\n--- 分类器对比演示 ---")
+    print("正在运行分类器对比示例程序...")
     
     try:
         # 运行分类器对比演示
@@ -200,13 +182,17 @@ def classifier_comparison():
         
         classifier_comparison_demo()
         
+    except ImportError as e:
+        print(f"无法导入分类器对比示例: {e}")
+        print("请确保examples/classifier_comparison_demo.py文件存在")
     except Exception as e:
         print(f"分类器对比分析过程中出现错误: {e}")
 
 
 def run_tests():
-    """运行测试"""
+    """运行测试 - 调用tests/目录下的测试文件"""
     print("\n--- 运行测试 ---")
+    print("正在运行系统测试...")
     
     try:
         # 运行WAV读取测试
@@ -229,36 +215,37 @@ def run_tests():
 
 def show_help():
     """显示帮助信息"""
-    print("\n--- 帮助信息 ---")
-    print("本系统提供以下功能:")
-    print("1. 基础分析演示 - 展示基本的语音处理流程")
-    print("2. 窗函数比较 - 比较不同窗函数的特性")
-    print("3. 端点检测演示 - 演示语音端点检测功能")
-    print("4. 完整分析流程 - 运行完整的分析并生成报告")
-    print("5. 语音识别演示 - 基于时域特征的数字识别")
-    print("6. 分类器对比分析 - 多种分类器性能对比和选择")
-    print("7. 运行测试 - 运行系统测试")
-    print("8. 查看帮助 - 显示此帮助信息")
-    print("\n使用说明:")
-    print("- 将WAV文件放在 data/audio 目录下")
-    print("- 系统会自动检测并列出可用的音频文件")
-    print("- 选择相应的功能进行分析")
-    print("- 分析结果会显示在屏幕上，并可保存到 data/results 目录")
-    print("- 语音识别需要按数字分类的训练数据")
+    print("\n--- 帮助信息 | Help Information ---")
+    print("本系统提供以下功能 | This system provides the following features:")
+    print("1️⃣  基础分析演示      - Basic Analysis Demo (examples/basic_analysis_demo.py)")
+    print("2️⃣  窗函数比较演示    - Window Function Comparison Demo (examples/window_comparison_demo.py)")
+    print("3️⃣  端点检测演示      - Endpoint Detection Demo (examples/endpoint_detection_demo.py)")
+    print("4️⃣  完整分析流程演示  - Complete Analysis Pipeline Demo (examples/speech_analysis_demo.py)")
+    print("5️⃣  语音识别演示      - Speech Recognition Demo (examples/speech_recognition_demo.py)")
+    print("6️⃣  分类器对比演示    - Classifier Comparison Demo (examples/classifier_comparison_demo.py)")
+    print("7️⃣  运行测试          - Run Tests (tests/)")
+    print("8️⃣  查看帮助          - Show Help")
+    print("0️⃣  退出程序          - Exit Program")
+    print("\n使用说明 | Usage Instructions:")
+    print("- 将WAV文件放在 data/audio 目录下 | Place WAV files in data/audio directory")
+    print("- 系统会自动检测并列出可用的音频文件 | System will auto-detect and list available audio files")
+    print("- 选择相应的功能进行分析 | Select corresponding function for analysis")
+    print("- 分析结果会显示在屏幕上，并可保存到 data/results 目录 | Results displayed on screen and saved to data/results")
+    print("- 语音识别需要按数字分类的训练数据 | Speech recognition requires training data organized by digits")
 
 
 def main():
     """主函数"""
-    print("欢迎使用语音信号处理系统！")
+    print("🎤 欢迎使用语音信号处理系统！| Welcome to Speech Signal Processing System!")
     
     while True:
         print_menu()
         
         try:
-            choice = input("请选择功能 (0-8): ").strip()
+            choice = input("请选择功能 (0-8) | Please select function (0-8): ").strip()
             
             if choice == '0':
-                print("感谢使用，再见！")
+                print("👋 感谢使用，再见！| Thank you for using, goodbye!")
                 break
             elif choice == '1':
                 basic_analysis()
@@ -277,15 +264,15 @@ def main():
             elif choice == '8':
                 show_help()
             else:
-                print("无效选择，请重新输入")
+                print("❌ 无效选择，请重新输入 | Invalid choice, please try again")
                 
         except KeyboardInterrupt:
-            print("\n\n程序被用户中断")
+            print("\n\n⚠️ 程序被用户中断 | Program interrupted by user")
             break
         except Exception as e:
-            print(f"程序运行出错: {e}")
+            print(f"❌ 程序运行出错 | Program error: {e}")
         
-        input("\n按回车键继续...")
+        input("\n按回车键继续... | Press Enter to continue...")
 
 
 if __name__ == "__main__":
