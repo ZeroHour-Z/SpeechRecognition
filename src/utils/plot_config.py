@@ -11,9 +11,11 @@ import os
 
 def configure_english_font():
     """配置matplotlib使用英文字体"""
-    # 设置英文字体参数
-    plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Arial', 'sans-serif']
+    # 设置英文字体参数，使用更通用的字体
+    plt.rcParams['font.sans-serif'] = ['DejaVu Sans', 'Liberation Sans', 'Arial', 'Helvetica', 'sans-serif']
     plt.rcParams['axes.unicode_minus'] = False
+    plt.rcParams['font.family'] = 'sans-serif'
+    
     return True
 
 

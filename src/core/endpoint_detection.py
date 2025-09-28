@@ -76,8 +76,8 @@ class DualThresholdEndpointDetector:
         """
         # 进行时域分析
         analysis_result = self.analyzer.analyze_signal(signal, 'hamming')
-        energy = analysis_result['energy']
-        zcr = analysis_result['zcr']
+        energy = analysis_result['short_time_energy']
+        zcr = analysis_result['zero_crossing_rate']
         time_axis = analysis_result['time_axis']
         
         # 计算阈值

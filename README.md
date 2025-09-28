@@ -13,8 +13,8 @@
 
 ### 安装依赖
 ```bash
-conda create -n speech-signal-processing python=3.10
-conda activate speech-signal-processing
+# 重要：先激活dsp1环境
+conda activate dsp1
 pip install -r requirements.txt
 ```
 
@@ -24,12 +24,46 @@ python examples/generate_test_audio.py
 ```
 
 ### 运行程序
+
+#### Windows用户
 ```bash
+# Qt图形界面 (推荐)
+python run_gui_universal.py
+
+# 命令行界面
 python main.py
 ```
 
-## 📋 功能菜单
+#### Linux/macOS用户
+```bash
+# Qt图形界面 (使用conda环境)
+./run_gui_conda.py
 
+# 或使用通用启动器
+python run_gui_universal.py
+
+# 命令行界面
+python main.py
+```
+
+## 📋 系统要求
+
+- **操作系统**: Windows 10/11, Linux, macOS
+- **Python版本**: 3.7+
+- **内存**: 至少4GB RAM
+- **存储空间**: 至少500MB可用空间
+- **音频设备**: 麦克风 (用于录音功能)
+
+## 🎯 功能特性
+
+### ✨ Qt图形界面
+- **直观操作** - 无需命令行知识
+- **实时录音** - 支持麦克风录音
+- **可视化分析** - 图表展示分析结果
+- **参数调节** - 采样率、帧长等可调
+- **实时监控** - 实时显示音频特征
+
+### 🔧 命令行界面
 ```
 1. 基础分析演示      - 展示WAV读取、分帧、时域分析
 2. 窗函数比较演示    - 比较不同窗函数的特性
@@ -57,11 +91,12 @@ python main.py
 - **批量测试** - 支持批量识别和准确率统计
 
 ### 分类器对比
-支持5种分类器算法：
+支持6种分类器算法：
 
 | 分类器 | 优点 | 推荐指数 |
 |--------|------|----------|
 | **支持向量机** | 泛化能力强、准确率高 | ⭐⭐⭐⭐⭐ |
+| **神经网络(MLP)** | 深度学习、非线性建模能力强 | ⭐⭐⭐⭐⭐ |
 | **朴素贝叶斯** | 训练快速、对噪声鲁棒 | ⭐⭐⭐⭐ |
 | **K近邻** | 非参数方法、适合复杂模式 | ⭐⭐⭐ |
 | **Fisher线性判别** | 计算效率高、降维效果好 | ⭐⭐⭐ |
@@ -70,20 +105,18 @@ python main.py
 ## 📊 项目结构
 
 ```
-speech-signal-processing/
-├── README.md                 # 项目说明文档
-├── requirements.txt          # Python依赖包
-├── main.py                   # 主程序入口
+SpeechRecognition/
+├── main.py                   # 命令行界面主程序
+├── qt_interface.py           # Qt图形界面主程序
 ├── speech_processing/        # 核心处理包
 │   ├── core/                 # 核心功能模块
 │   ├── recognition/          # 语音识别模块
 │   └── utils/                # 工具模块
 ├── examples/                 # 示例程序
-└── data/                     # 数据目录
-    ├── audio/                # 音频文件
-    └── results/              # 分析结果
-    └── test/                 # 语音识别测试数据
-    └── train/                # 语音识别训练数据
+├── tests/                    # 测试程序
+├── requirements.txt          # Python依赖包
+├── run_gui_universal.py      # 跨平台Qt启动器 (推荐)
+└── 各种README文档            # 使用说明
 ```
 
 ## 🎓 实验指导
@@ -121,11 +154,13 @@ python main.py
 3. **决策树** - 可解释性强、处理非线性
 4. **支持向量机** - 泛化能力强、适合高维数据
 5. **K近邻** - 非参数方法、适合复杂边界
+6. **神经网络(MLP)** - 深度学习、非线性建模能力强
 
 ### 分类器选择建议
-- **追求最高准确率**：支持向量机
+- **追求最高准确率**：神经网络(MLP) 或 支持向量机
 - **需要快速训练**：朴素贝叶斯
 - **需要可解释性**：决策树
+- **深度学习应用**：神经网络(MLP)
 - **数据线性可分**：Fisher线性判别
 - **数据量小且模式复杂**：K近邻
 

@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from speech_processing import AdvancedDigitRecognizer, create_training_data_structure
+from src import AdvancedDigitRecognizer, create_training_data_structure
 import numpy as np
 
 
@@ -83,7 +83,7 @@ def theoretical_demo():
     print("=" * 60)
     
     # 显示分类器选择指南
-    from speech_processing.recognition.advanced_recognizer import create_classifier_selection_guide
+    from src.recognition.advanced_recognizer import create_classifier_selection_guide
     guide = create_classifier_selection_guide()
     print(guide)
     
@@ -155,7 +155,7 @@ def interactive_recognition_test(recognizer):
             print("-" * 50)
             
             # 读取音频
-            from speech_processing import WAVReader
+            from src import WAVReader
             reader = WAVReader(wav_path)
             audio_data, sample_rate = reader.read()
             

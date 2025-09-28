@@ -1,3 +1,15 @@
-numpy>=1.21.0
+# 核心科学计算库
+numpy>=1.21.0,<2.0
 scipy>=1.7.0
 matplotlib>=3.4.0
+scikit-learn>=1.0.0
+torch>=1.9.0
+
+# GUI界面
+PyQt5>=5.15.0
+
+# 音频处理 - 需要系统依赖
+# Ubuntu/Debian: sudo apt install portaudio19-dev python3-pyaudio
+# CentOS/RHEL: sudo yum install portaudio-devel && pip install pyaudio
+# 或者使用: conda install pyaudio
+pyaudio>=0.2.11

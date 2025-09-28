@@ -9,7 +9,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import numpy as np
 import wave
-from speech_processing import WAVReader
+from src import WAVReader
 
 
 def generate_sine_wave(frequency, duration, sample_rate=16000, amplitude=0.5):

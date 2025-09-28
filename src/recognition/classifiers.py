@@ -11,18 +11,32 @@ warnings.filterwarnings('ignore')
 
 # 尝试导入sklearn，如果没有安装则使用简化版本
 try:
+    import sklearn
     from sklearn.naive_bayes import GaussianNB
     from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
     from sklearn.tree import DecisionTreeClassifier
     from sklearn.svm import SVC
     from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.neural_network import MLPClassifier
     from sklearn.model_selection import cross_val_score
     from sklearn.metrics import classification_report, confusion_matrix
     from sklearn.preprocessing import StandardScaler
     SKLEARN_AVAILABLE = True
-except ImportError:
+    print(f"sklearn版本: {sklearn.__version__}")
+except ImportError as e:
     SKLEARN_AVAILABLE = False
-    print("警告: sklearn未安装，将使用简化版本的分类器")
+    print(f"警告: sklearn未安装或导入失败 ({e})，将使用简化版本的分类器")
+
+# 尝试导入深度学习库
+try:
+    import torch
+    import torch.nn as nn
+    import torch.optim as optim
+    from torch.utils.data import DataLoader, TensorDataset
+    PYTORCH_AVAILABLE = True
+except ImportError:
+    PYTORCH_AVAILABLE = False
+    print("警告: PyTorch未安装，CNN分类器不可用")
 
 
 class BaseClassifier(ABC):
@@ -230,7 +244,8 @@ class DecisionTreeClassifier(BaseClassifier):
     def __init__(self, max_depth: int = 10):
         super().__init__("决策树")
         if SKLEARN_AVAILABLE:
-            self.classifier = DecisionTreeClassifier(max_depth=max_depth, random_state=42)
+            from sklearn.tree import DecisionTreeClassifier as SklearnDecisionTreeClassifier
+            self.classifier = SklearnDecisionTreeClassifier(max_depth=max_depth, random_state=42)
         else:
             self.classifier = None
             self.tree = None
@@ -459,6 +474,179 @@ class KNearestNeighborsClassifier(BaseClassifier):
             return np.array(probabilities)
 
 
+class CNNClassifier(BaseClassifier):
+    """卷积神经网络分类器 (PyTorch实现)"""
+    
+    def __init__(self, input_length=11, num_classes=10, learning_rate=0.001):
+        super().__init__("CNN (PyTorch)")
+        self.input_length = input_length
+        self.num_classes = num_classes
+        self.learning_rate = learning_rate
+        self.model = None
+        self.optimizer = None
+        self.criterion = None
+        self.scaler = None
+        
+        if PYTORCH_AVAILABLE:
+            self._build_model()
+        else:
+            print("警告: PyTorch未安装，CNN分类器不可用")
+    
+    def _build_model(self):
+        """构建CNN模型"""
+        class SpeechCNN(nn.Module):
+            def __init__(self, input_length, num_classes):
+                super(SpeechCNN, self).__init__()
+                
+                # 卷积层
+                self.conv1 = nn.Conv1d(1, 32, kernel_size=3, padding=1)
+                self.conv2 = nn.Conv1d(32, 64, kernel_size=3, padding=1)
+                self.conv3 = nn.Conv1d(64, 128, kernel_size=3, padding=1)
+                
+                # 池化层
+                self.pool = nn.MaxPool1d(2)
+                
+                # 批归一化
+                self.bn1 = nn.BatchNorm1d(32)
+                self.bn2 = nn.BatchNorm1d(64)
+                self.bn3 = nn.BatchNorm1d(128)
+                
+                # Dropout
+                self.dropout = nn.Dropout(0.5)
+                
+                # 计算全连接层输入大小
+                # 经过3次池化，每次长度减半
+                fc_input_size = 128 * (input_length // 8)
+                
+                # 全连接层
+                self.fc1 = nn.Linear(fc_input_size, 256)
+                self.fc2 = nn.Linear(256, 128)
+                self.fc3 = nn.Linear(128, num_classes)
+                
+                # 激活函数
+                self.relu = nn.ReLU()
+                
+            def forward(self, x):
+                # x shape: (batch_size, 1, input_length)
+                x = self.relu(self.bn1(self.conv1(x)))
+                x = self.pool(x)
+                
+                x = self.relu(self.bn2(self.conv2(x)))
+                x = self.pool(x)
+                
+                x = self.relu(self.bn3(self.conv3(x)))
+                x = self.pool(x)
+                
+                # 展平
+                x = x.view(x.size(0), -1)
+                
+                # 全连接层
+                x = self.dropout(self.relu(self.fc1(x)))
+                x = self.dropout(self.relu(self.fc2(x)))
+                x = self.fc3(x)
+                
+                return x
+        
+        self.model = SpeechCNN(self.input_length, self.num_classes)
+        self.optimizer = optim.Adam(self.model.parameters(), lr=self.learning_rate)
+        self.criterion = nn.CrossEntropyLoss()
+    
+    def train(self, features: np.ndarray, labels: np.ndarray) -> None:
+        """训练CNN分类器"""
+        if not PYTORCH_AVAILABLE:
+            raise ImportError("PyTorch未安装，无法使用CNN分类器")
+        
+        # 数据标准化
+        self.scaler = StandardScaler()
+        features_scaled = self.scaler.fit_transform(features)
+        
+        # 转换为PyTorch张量
+        X = torch.FloatTensor(features_scaled).unsqueeze(1)  # 添加通道维度
+        y = torch.LongTensor(labels)
+        
+        # 创建数据加载器
+        dataset = TensorDataset(X, y)
+        dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
+        
+        # 训练模型
+        self.model.train()
+        epochs = 50
+        
+        for epoch in range(epochs):
+            total_loss = 0
+            for batch_X, batch_y in dataloader:
+                self.optimizer.zero_grad()
+                outputs = self.model(batch_X)
+                loss = self.criterion(outputs, batch_y)
+                loss.backward()
+                self.optimizer.step()
+                total_loss += loss.item()
+            
+            if (epoch + 1) % 10 == 0:
+                print(f"Epoch {epoch+1}/{epochs}, Loss: {total_loss/len(dataloader):.4f}")
+        
+        self.is_trained = True
+        print(f"CNN训练完成 - 输入长度: {self.input_length}, 类别数: {self.num_classes}")
+    
+    def predict(self, features: np.ndarray) -> np.ndarray:
+        """预测分类结果"""
+        if not self.is_trained:
+            raise ValueError("分类器尚未训练")
+        
+        if not PYTORCH_AVAILABLE:
+            # 简化版本：随机预测
+            return np.random.randint(0, self.num_classes, len(features))
+        
+        self.model.eval()
+        with torch.no_grad():
+            features_scaled = self.scaler.transform(features)
+            X = torch.FloatTensor(features_scaled).unsqueeze(1)
+            outputs = self.model(X)
+            _, predicted = torch.max(outputs.data, 1)
+            return predicted.numpy()
+    
+    def predict_proba(self, features: np.ndarray) -> np.ndarray:
+        """预测分类概率"""
+        if not self.is_trained:
+            raise ValueError("分类器尚未训练")
+        
+        if not PYTORCH_AVAILABLE:
+            # 简化版本：均匀分布
+            return np.ones((len(features), self.num_classes)) / self.num_classes
+        
+        self.model.eval()
+        with torch.no_grad():
+            features_scaled = self.scaler.transform(features)
+            X = torch.FloatTensor(features_scaled).unsqueeze(1)
+            outputs = self.model(X)
+            probabilities = torch.softmax(outputs, dim=1)
+            return probabilities.numpy()
+    
+    def get_info(self) -> Dict[str, Any]:
+        """获取分类器信息"""
+        info = {
+            'name': self.name,
+            'type': 'CNN (PyTorch)',
+            'input_length': self.input_length,
+            'num_classes': self.num_classes,
+            'learning_rate': self.learning_rate,
+            'is_trained': self.is_trained
+        }
+        
+        if self.is_trained and PYTORCH_AVAILABLE:
+            # 计算模型参数数量
+            total_params = sum(p.numel() for p in self.model.parameters())
+            trainable_params = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+            
+            info.update({
+                'total_parameters': total_params,
+                'trainable_parameters': trainable_params,
+                'model_architecture': str(self.model)
+            })
+        
+        return info
+
+
 class ClassifierComparison:
     """分类器对比分析类"""
     
@@ -468,7 +656,8 @@ class ClassifierComparison:
             'fisher_lda': FisherLinearDiscriminantClassifier(),
             'decision_tree': DecisionTreeClassifier(),
             'svm': SupportVectorMachineClassifier(),
-            'knn': KNearestNeighborsClassifier(k=3)
+            'knn': KNearestNeighborsClassifier(k=3),
+            'cnn': CNNClassifier(input_length=11, num_classes=10)
         }
         self.results = {}
     

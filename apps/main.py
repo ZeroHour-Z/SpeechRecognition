@@ -1,11 +1,31 @@
+#!/home/zerohour/.conda/envs/dsp1/bin/python3
 """
 语音信号处理系统主程序
 提供交互式菜单，方便用户选择不同的功能
+使用dsp1 conda环境
 """
 
 import os
 import sys
-from speech_processing import WAVReader, FrameProcessor, TimeDomainAnalyzer, DualThresholdEndpointDetector
+
+# 检查Python环境
+def check_environment():
+    """检查运行环境"""
+    current_python = sys.executable
+    expected_python = "/home/zerohour/.conda/envs/dsp1/bin/python"
+    
+    if not current_python.startswith("/home/zerohour/.conda/envs/dsp1"):
+        print("⚠️  警告: 当前不在dsp1环境中运行")
+        print(f"当前Python路径: {current_python}")
+        print(f"建议使用: {expected_python}")
+        print("请运行: conda activate dsp1")
+        print("或者使用: /home/zerohour/.conda/envs/dsp1/bin/python main.py")
+        print()
+
+# 检查环境
+check_environment()
+
+from src import WAVReader, FrameProcessor, TimeDomainAnalyzer, DualThresholdEndpointDetector
 
 
 def print_menu():
@@ -27,25 +47,33 @@ def print_menu():
 
 def check_audio_files():
     """检查音频文件"""
-    audio_dir = "data/audio"
-    if not os.path.exists(audio_dir):
-        print(f"音频目录 {audio_dir} 不存在，正在创建...")
-        os.makedirs(audio_dir, exist_ok=True)
-        return []
+    audio_dirs = ["data/audio/input", "data/audio/training", "data/audio/testing"]
+    all_wav_files = []
     
-    wav_files = [f for f in os.listdir(audio_dir) if f.endswith('.wav')]
-    return wav_files
+    for audio_dir in audio_dirs:
+        if os.path.exists(audio_dir):
+            wav_files = [f for f in os.listdir(audio_dir) if f.endswith('.wav')]
+            for wav_file in wav_files:
+                all_wav_files.append(os.path.join(audio_dir, wav_file))
+        else:
+            print(f"音频目录 {audio_dir} 不存在，正在创建...")
+            os.makedirs(audio_dir, exist_ok=True)
+    
+    return all_wav_files
 
 
 def select_audio_file(wav_files):
     """选择音频文件"""
     if not wav_files:
-        print("在 data/audio 目录下没有找到WAV文件")
-        print("请将WAV文件放在 data/audio 目录下")
+        print("在音频目录下没有找到WAV文件")
+        print("请将WAV文件放在以下目录之一:")
+        print("- data/audio/input/ (待处理文件)")
+        print("- data/audio/training/ (训练文件)")
+        print("- data/audio/testing/ (测试文件)")
         return None
     
     if len(wav_files) == 1:
-        return os.path.join("data/audio", wav_files[0])
+        return wav_files[0]
     
     print("找到多个WAV文件:")
     for i, file in enumerate(wav_files):
@@ -54,13 +82,13 @@ def select_audio_file(wav_files):
     try:
         choice = int(input("请选择要分析的文件编号: ")) - 1
         if 0 <= choice < len(wav_files):
-            return os.path.join("data/audio", wav_files[choice])
+            return wav_files[choice]
         else:
             print("无效选择，使用第一个文件")
-            return os.path.join("data/audio", wav_files[0])
+            return wav_files[0]
     except ValueError:
         print("无效输入，使用第一个文件")
-        return os.path.join("data/audio", wav_files[0])
+        return wav_files[0]
 
 
 def basic_analysis():
@@ -70,7 +98,7 @@ def basic_analysis():
     
     try:
         # 添加examples目录到路径
-        sys.path.append("examples")
+        sys.path.append("examples/analysis")
         
         # 导入并运行基础分析示例
         from basic_analysis_demo import basic_analysis_example
@@ -90,7 +118,7 @@ def window_comparison():
     
     try:
         # 运行窗函数比较示例
-        sys.path.append("examples")
+        sys.path.append("examples/analysis")
         from window_comparison_demo import window_comparison_example
         window_comparison_example()
         
@@ -108,7 +136,7 @@ def endpoint_detection():
     
     try:
         # 运行端点检测示例
-        sys.path.append("examples")
+        sys.path.append("examples/analysis")
         from endpoint_detection_demo import endpoint_detection_demo
         endpoint_detection_demo()
         
@@ -126,7 +154,7 @@ def complete_analysis():
     
     try:
         # 运行完整分析示例
-        sys.path.append("examples")
+        sys.path.append("examples/analysis")
         from speech_analysis_demo import SpeechAnalysisDemo
         
         demo = SpeechAnalysisDemo()
@@ -158,7 +186,7 @@ def speech_recognition():
     
     try:
         # 运行语音识别演示
-        sys.path.append("examples")
+        sys.path.append("examples/analysis")
         from speech_recognition_demo import speech_recognition_demo
         
         speech_recognition_demo()
@@ -177,7 +205,7 @@ def classifier_comparison():
     
     try:
         # 运行分类器对比演示
-        sys.path.append("examples")
+        sys.path.append("examples/analysis")
         from classifier_comparison_demo import classifier_comparison_demo
         
         classifier_comparison_demo()
@@ -227,11 +255,15 @@ def show_help():
     print("8️⃣  查看帮助          - Show Help")
     print("0️⃣  退出程序          - Exit Program")
     print("\n使用说明 | Usage Instructions:")
-    print("- 将WAV文件放在 data/audio 目录下 | Place WAV files in data/audio directory")
+    print("- 将WAV文件放在以下目录之一 | Place WAV files in one of the following directories:")
+    print("  * data/audio/input/ (待处理文件) | data/audio/input/ (files to process)")
+    print("  * data/audio/training/ (训练文件) | data/audio/training/ (training files)")
+    print("  * data/audio/testing/ (测试文件) | data/audio/testing/ (testing files)")
     print("- 系统会自动检测并列出可用的音频文件 | System will auto-detect and list available audio files")
     print("- 选择相应的功能进行分析 | Select corresponding function for analysis")
-    print("- 分析结果会显示在屏幕上，并可保存到 data/results 目录 | Results displayed on screen and saved to data/results")
+    print("- 分析结果会显示在屏幕上，并可保存到 data/audio/results 目录 | Results displayed on screen and saved to data/audio/results")
     print("- 语音识别需要按数字分类的训练数据 | Speech recognition requires training data organized by digits")
+    print("- 训练数据应放在 data/audio/training/数字/ 目录下 | Training data should be placed in data/audio/training/digit/ directories")
 
 
 def main():

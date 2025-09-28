@@ -120,9 +120,9 @@ class TimeDomainAnalyzer:
         return {
             'frames': frames,
             'windowed_frames': windowed_frames,
-            'energy': energy,
-            'amplitude': amplitude,
-            'zcr': zcr,
+            'short_time_energy': energy,
+            'average_amplitude': amplitude,
+            'zero_crossing_rate': zcr,
             'time_axis': time_axis,
             'frame_length': len(frames[0]) if frames else 0,
             'num_frames': len(frames)

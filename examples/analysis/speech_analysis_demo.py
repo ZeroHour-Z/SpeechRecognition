@@ -6,10 +6,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from speech_processing import WAVReader, FrameProcessor, TimeDomainAnalyzer, DualThresholdEndpointDetector
-from speech_processing.core.frame_window import compare_windows, visualize_framing
-from speech_processing.core.time_domain_analysis import compare_window_effects, analyze_voiced_unvoiced_regions
-from speech_processing.core.endpoint_detection import test_endpoint_detection_with_parameters
+from src import WAVReader, FrameProcessor, TimeDomainAnalyzer, DualThresholdEndpointDetector
+from src.core.frame_window import compare_windows, visualize_framing
+from src.core.time_domain_analysis import compare_window_effects, analyze_voiced_unvoiced_regions
+from src.core.endpoint_detection import test_endpoint_detection_with_parameters
 
 
 class SpeechAnalysisDemo:

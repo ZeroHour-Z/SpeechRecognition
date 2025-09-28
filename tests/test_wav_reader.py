@@ -7,7 +7,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import numpy as np
-from speech_processing import WAVReader
+from src import WAVReader
 
 
 def test_wav_reader():

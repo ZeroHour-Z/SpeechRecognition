@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from speech_processing import WAVReader, DualThresholdEndpointDetector
+from src import WAVReader, DualThresholdEndpointDetector
 import matplotlib.pyplot as plt
 import numpy as np
 

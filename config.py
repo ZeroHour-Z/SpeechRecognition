@@ -18,8 +18,12 @@ DEFAULT_CONFIG = {
     'min_silence_frames': 5,      # 最小静音帧数
     
     # 文件路径
-    'audio_dir': 'data/audio',    # 音频文件目录
-    'results_dir': 'data/results', # 结果保存目录
+    'audio_input_dir': 'data/audio/input',      # 待处理音频文件目录
+    'audio_training_dir': 'data/audio/training', # 训练音频文件目录
+    'audio_testing_dir': 'data/audio/testing',   # 测试音频文件目录
+    'audio_output_dir': 'data/audio/output',     # 处理后音频文件目录
+    'models_dir': 'data/audio/models',           # 模型保存目录
+    'results_dir': 'data/audio/results',         # 结果保存目录
     
     # 可视化参数
     'figure_size': (15, 10),      # 图形大小
