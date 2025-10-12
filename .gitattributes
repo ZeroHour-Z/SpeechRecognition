@@ -1,0 +1,68 @@
+# 自动检测文本文件并标准化行尾
+* text=auto
+
+# Python文件
+*.py text eol=lf
+*.pyw text eol=lf
+*.pyx text eol=lf
+
+# Shell脚本
+*.sh text eol=lf
+*.bash text eol=lf
+
+# 批处理文件
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# 文档
+*.md text eol=lf
+*.txt text eol=lf
+*.rst text eol=lf
+
+# 配置文件
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+*.cfg text eol=lf
+
+# 音频文件（二进制）
+*.wav binary
+*.mp3 binary
+*.flac binary
+
+# 图片文件（二进制）
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+
+# 可执行文件（二进制）
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+
+# 压缩文件（二进制）
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+*.rar binary
+
+# 数据文件（二进制）
+*.pkl binary
+*.pickle binary
+*.npy binary
+*.npz binary
+*.h5 binary
+*.hdf5 binary
+
+# 导出文件大小限制（防止巨大文件被误提交）
+*.pth filter=lfs diff=lfs merge=lfs -text
+*.model filter=lfs diff=lfs merge=lfs -text
+

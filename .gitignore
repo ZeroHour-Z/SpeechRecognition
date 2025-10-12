@@ -4,9 +4,10 @@ __pycache__/
 *$py.class
 *.so
 .Python
-build/
+env/
+venv/
+ENV/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
@@ -19,121 +20,85 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
-# PyInstaller
-*.manifest
+# PyInstaller打包
+build/
+dist/
+*.exe
 *.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
+*.manifest
+*.toc
+*.pyz
+*.pkg
+warn-*.txt
+xref-*.html
 
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
 # IDE
-.vscode/
 .idea/
-*.swp
-*.swo
-*~
+.vscode/
+*.code-workspace
 
-# OS
+# 操作系统
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
-
-# 项目特定
-data/audio/*.wav
-data/results/*.txt
-data/results/*.png
-data/results/*.jpg
-*.wav
-*.mp3
-*.mp4
+desktop.ini
+*.lnk
 
 # 临时文件
-temp/
-tmp/
 *.tmp
-*.temp
+*.bak
+*.swp
+*~
+~$*
 
 # 日志文件
 *.log
-logs/
 
-# 配置文件（如果包含敏感信息）
-config_local.py
-secrets.py
+# HTML文件（文档导出）
+docs/*.html
+
+# 测试音频文件（可选，根据需要取消注释）
+# data/audio/*.wav
+# data/audio/recording.wav
+# data/audio/test_*.wav
+
+# 训练数据（可选，如果数据太大可以忽略）
+# data/train/*/*.wav
+# data/test/*/*.wav
+
+# 分析报告临时文件
+data/results/*.txt
+
+# 测试覆盖率
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.pytest_cache/
+
+# 环境变量
+.env
+.env.local
+
+# Windows缩略图
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# 文件夹配置
+.DS_Store
+.AppleDouble
+.LSOverride
+Desktop.ini
+
+# 老旧的speech_processing包（如果迁移到src）
+speech_processing/
+
+# 临时下载
+downloads/
+temp/
+tmp/
