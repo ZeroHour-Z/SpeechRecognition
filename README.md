@@ -2,12 +2,69 @@
 
 基于时域分析的孤立字语音识别系统，实现WAV文件读取、分帧加窗、时域特征提取、端点检测和数字识别功能。
 
----
+**开发团队**：周湛昊、张振鑫、孙鑫磊、王毅  
+**开发环境**：Python 3.8 + Conda  
+**测试平台**：Linux Ubuntu + Windows 11  
+**最后更新**：2025-10-18
 
-**开发环境**：Python 3.10 + Conda  
-**测试平台**：Windows 11  
-**最后更新**：2025-10-12
-**开发人员**：ZeroHour（周湛昊）、ZhangZhixin（张振鑫）、SunXinlei（孙鑫磊）、WangYi（王毅）
+## 🚀 快速开始
+
+### 环境配置
+
+#### 使用Conda（推荐）
+```bash
+# 创建环境
+conda create -n speech_recognition python=3.8
+conda activate speech_recognition
+
+# 安装依赖
+pip install -r requirements.txt
+```
+
+#### 使用pip
+```bash
+# 创建虚拟环境
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# 或 venv\Scripts\activate  # Windows
+
+# 安装依赖
+pip install -r requirements.txt
+```
+
+### 运行程序
+
+```bash
+# GUI界面（推荐）
+python apps/run_gui.py
+
+# 命令行界面
+python apps/main.py
+```
+
+### 系统要求
+
+- **Python**: 3.8+
+- **操作系统**: Linux (推荐), Windows, macOS
+- **内存**: 4GB+ RAM
+- **存储**: 1GB+ 可用空间
+
+### 音频系统依赖
+
+#### Linux系统
+```bash
+# Ubuntu/Debian
+sudo apt install portaudio19-dev python3-pyaudio
+
+# 或使用conda
+conda install pyaudio
+```
+
+#### Windows系统
+```bash
+# 使用conda
+conda install pyaudio
+```
 
 ---
 
@@ -59,36 +116,6 @@
 ## 项目简介
 
 这是一个完整的语音信号处理实验系统，包含信号分析、特征提取和数字识别三大模块。支持图形界面和命令行两种操作方式。
-
-## 快速开始
-
-### 环境配置
-
-```bash
-# 激活conda环境
-conda activate dsp1
-
-# 安装依赖
-pip install -r requirements.txt
-```
-
-### 运行方式
-
-**图形界面（推荐）**
-```bash
-python run_gui_universal.py
-```
-
-**命令行界面**
-```bash
-python main.py
-```
-
-### 系统要求
-
-- Python 3.7+
-- 4GB+ RAM
-- 支持Windows/Linux/macOS
 
 ## 主要功能
 
@@ -167,8 +194,23 @@ dsp/
 ## 文档导航
 
 - **[实验结果说明](data/results/实验结果说明.md)** - 详细的实验结果和分析
+## 运行示例
+
+```bash
+# 基础分析
+python examples/analysis/basic_demo.py
+
+# 语音识别
+python examples/recognition/speech_demo.py
+
+# 运行实验
+python examples/experiments/run_experiments.py
+```
+
+## 📚 文档
+
 - **[GUI使用说明](docs/GUI_README.md)** - 图形界面使用教程
-- **[EXE使用说明](docs/EXE使用说明.md)** - 独立程序使用指南  
 - **[数据目录说明](data/README.md)** - 数据组织结构
-- **[文档索引](docs/README.md)** - 所有文档导航
+- **[项目结构](PROJECT_STRUCTURE.md)** - 项目文件组织
+- **[学术论文](paper/README.md)** - 论文相关文档
 

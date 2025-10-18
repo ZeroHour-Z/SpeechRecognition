@@ -43,7 +43,7 @@ class DualThresholdEndpointDetector:
         max_energy = np.max(energy)
         min_energy = np.min(energy)
         energy_threshold_high = max_energy * energy_ratio
-        energy_threshold_low = min_energy + (max_energy - min_energy) * energy_ratio * 0.1
+        energy_threshold_low = min_energy + (max_energy - min_energy) * energy_ratio * 0.5
         
         # 计算过零率阈值
         mean_zcr = np.mean(zcr)
@@ -238,7 +238,7 @@ class DualThresholdEndpointDetector:
         start_frame = int(start_time * self.sample_rate / self.analyzer.frame_processor.frame_shift)
         end_frame = int((start_time + duration) * self.sample_rate / self.analyzer.frame_processor.frame_shift)
         
-        display_energy = analysis_result['energy'][start_frame:end_frame]
+        display_energy = analysis_result['short_time_energy'][start_frame:end_frame]
         display_zcr = analysis_result['zcr'][start_frame:end_frame]
         display_speech = speech_frames[start_frame:end_frame]
         display_feature_time = analysis_result['time_axis'][start_frame:end_frame]

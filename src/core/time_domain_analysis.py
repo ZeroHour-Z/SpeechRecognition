@@ -151,9 +151,9 @@ class TimeDomainAnalyzer:
         start_frame = int(start_time * self.sample_rate / self.frame_processor.frame_shift)
         end_frame = int((start_time + duration) * self.sample_rate / self.frame_processor.frame_shift)
         
-        display_energy = analysis_result['energy'][start_frame:end_frame]
-        display_amplitude = analysis_result['amplitude'][start_frame:end_frame]
-        display_zcr = analysis_result['zcr'][start_frame:end_frame]
+        display_energy = analysis_result['short_time_energy'][start_frame:end_frame]
+        display_amplitude = analysis_result['average_amplitude'][start_frame:end_frame]
+        display_zcr = analysis_result['zero_crossing_rate'][start_frame:end_frame]
         display_feature_time = analysis_result['time_axis'][start_frame:end_frame]
         
         # 创建图形
@@ -199,9 +199,9 @@ class TimeDomainAnalyzer:
         print("=" * 50)
         print(f"总帧数: {analysis_result['num_frames']}")
         print(f"帧长: {analysis_result['frame_length']} 采样点")
-        print(f"短时能量 - 最大值: {analysis_result['energy'].max():.6f}, 最小值: {analysis_result['energy'].min():.6f}")
-        print(f"短时平均幅度 - 最大值: {analysis_result['amplitude'].max():.6f}, 最小值: {analysis_result['amplitude'].min():.6f}")
-        print(f"短时过零率 - 最大值: {analysis_result['zcr'].max():.4f}, 最小值: {analysis_result['zcr'].min():.4f}")
+        print(f"短时能量 - 最大值: {analysis_result['short_time_energy'].max():.6f}, 最小值: {analysis_result['short_time_energy'].min():.6f}")
+        print(f"短时平均幅度 - 最大值: {analysis_result['average_amplitude'].max():.6f}, 最小值: {analysis_result['average_amplitude'].min():.6f}")
+        print(f"短时过零率 - 最大值: {analysis_result['zero_crossing_rate'].max():.4f}, 最小值: {analysis_result['zero_crossing_rate'].min():.4f}")
         print("=" * 50)
 
 
@@ -224,7 +224,7 @@ def compare_window_effects(signal: np.ndarray, sample_rate: int) -> None:
         
         # 短时能量
         plt.subplot(2, 2, 1)
-        plt.plot(result['time_axis'], result['energy'], colors[i], 
+        plt.plot(result['time_axis'], result['short_time_energy'], colors[i], 
                 linewidth=2, label=f'{window_type}窗')
         plt.title('Short-time Energy Comparison')
         plt.xlabel('Time (s)')
@@ -262,9 +262,9 @@ def compare_window_effects(signal: np.ndarray, sample_rate: int) -> None:
         analyzer = TimeDomainAnalyzer(sample_rate, 25.0, 10.0)
         result = analyzer.analyze_signal(signal, window_type)
         
-        energy_std = np.std(result['energy'])
-        amplitude_std = np.std(result['amplitude'])
-        zcr_std = np.std(result['zcr'])
+        energy_std = np.std(result['short_time_energy'])
+        amplitude_std = np.std(result['average_amplitude'])
+        zcr_std = np.std(result['zero_crossing_rate'])
         
         table_data.append([
             window_type,
@@ -298,13 +298,13 @@ def analyze_voiced_unvoiced_regions(signal: np.ndarray, sample_rate: int) -> Non
     result = analyzer.analyze_signal(signal, 'hamming')
     
     # 计算阈值
-    energy_threshold = np.mean(result['energy']) * 0.1
-    zcr_threshold = np.mean(result['zcr']) * 1.5
+    energy_threshold = np.mean(result['short_time_energy']) * 0.1
+    zcr_threshold = np.mean(result['zero_crossing_rate']) * 1.5
     
     # 分类语音段
-    voiced_frames = (result['energy'] > energy_threshold) & (result['zcr'] < zcr_threshold)
-    unvoiced_frames = (result['energy'] > energy_threshold) & (result['zcr'] >= zcr_threshold)
-    silence_frames = result['energy'] <= energy_threshold
+    voiced_frames = (result['short_time_energy'] > energy_threshold) & (result['zero_crossing_rate'] < zcr_threshold)
+    unvoiced_frames = (result['short_time_energy'] > energy_threshold) & (result['zero_crossing_rate'] >= zcr_threshold)
+    silence_frames = result['short_time_energy'] <= energy_threshold
     
     # 绘制分析结果
     plt.figure(figsize=(15, 8))
@@ -320,7 +320,7 @@ def analyze_voiced_unvoiced_regions(signal: np.ndarray, sample_rate: int) -> Non
     
     # 短时能量和过零率
     plt.subplot(3, 1, 2)
-    plt.plot(result['time_axis'], result['energy'], 'r-', linewidth=2, label='短时能量')
+    plt.plot(result['time_axis'], result['short_time_energy'], 'r-', linewidth=2, label='短时能量')
     plt.axhline(y=energy_threshold, color='r', linestyle='--', alpha=0.7, label='能量阈值')
     plt.xlabel('Time (s)')
     plt.ylabel('Energy')
@@ -339,7 +339,7 @@ def analyze_voiced_unvoiced_regions(signal: np.ndarray, sample_rate: int) -> Non
     plt.show()
     
     # 统计信息
-    total_frames = len(result['energy'])
+    total_frames = len(result['short_time_energy'])
     voiced_count = np.sum(voiced_frames)
     unvoiced_count = np.sum(unvoiced_frames)
     silence_count = np.sum(silence_frames)

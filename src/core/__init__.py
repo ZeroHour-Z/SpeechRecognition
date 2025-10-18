@@ -4,12 +4,12 @@
 
 from .audio_recorder import AudioRecorder, RealTimeAnalyzer
 from .wav_reader import WAVReader
-from .frame_window import FrameProcessor
+from .frame_window import FrameProcessor, WindowFunctions
 from .time_domain_analysis import TimeDomainAnalyzer
 from .endpoint_detection import DualThresholdEndpointDetector
 
 __all__ = [
     'AudioRecorder', 'RealTimeAnalyzer',
-    'WAVReader', 'FrameProcessor', 
+    'WAVReader', 'FrameProcessor', 'WindowFunctions',
     'TimeDomainAnalyzer', 'DualThresholdEndpointDetector'
 ]

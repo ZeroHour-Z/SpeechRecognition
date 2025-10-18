@@ -4,10 +4,9 @@ __pycache__/
 *$py.class
 *.so
 .Python
-env/
-venv/
-ENV/
+build/
 develop-eggs/
+dist/
 downloads/
 eggs/
 .eggs/
@@ -20,85 +19,85 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# PyInstaller打包
-build/
-dist/
-*.exe
-*.spec
+# PyInstaller
 *.manifest
-*.toc
-*.pyz
-*.pkg
-warn-*.txt
-xref-*.html
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# IDE
-.idea/
-.vscode/
-*.code-workspace
+# pyenv
+.python-version
 
-# 操作系统
+# LaTeX (in paper directory)
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.synctex.gz
+paper/*.toc
+paper/*.lof
+paper/*.lot
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.bbl
+paper/*.blg
+paper/*.idx
+paper/*.ind
+paper/*.ilg
+paper/*.lol
+
+# OS
 .DS_Store
-Thumbs.db
-desktop.ini
-*.lnk
-
-# 临时文件
-*.tmp
-*.bak
-*.swp
-*~
-~$*
-
-# 日志文件
-*.log
-
-# HTML文件（文档导出）
-docs/*.html
-
-# 测试音频文件（可选，根据需要取消注释）
-# data/audio/*.wav
-# data/audio/recording.wav
-# data/audio/test_*.wav
-
-# 训练数据（可选，如果数据太大可以忽略）
-# data/train/*/*.wav
-# data/test/*/*.wav
-
-# 分析报告临时文件
-data/results/*.txt
-
-# 测试覆盖率
-htmlcov/
-.coverage
-.coverage.*
-coverage.xml
-*.cover
-.pytest_cache/
-
-# 环境变量
-.env
-.env.local
-
-# Windows缩略图
-Thumbs.db:encryptable
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 ehthumbs.db
-ehthumbs_vista.db
+Thumbs.db
 
-# 文件夹配置
-.DS_Store
-.AppleDouble
-.LSOverride
-Desktop.ini
+# Audio files (optional - uncomment if you don't want to track audio files)
+# *.wav
+# *.mp3
+# *.flac
 
-# 老旧的speech_processing包（如果迁移到src）
-speech_processing/
-
-# 临时下载
-downloads/
-temp/
-tmp/
+# Results and outputs
+data/results/
+data/audio/output/
+*.png
+*.jpg
+*.jpeg
+*.pdf

@@ -25,6 +25,9 @@ def check_environment():
 # 检查环境
 check_environment()
 
+# 添加项目根目录到Python路径
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from src import WAVReader, FrameProcessor, TimeDomainAnalyzer, DualThresholdEndpointDetector
 
 
@@ -33,12 +36,12 @@ def print_menu():
     print("\n" + "=" * 80)
     print("🎤 语音信号处理系统 | Speech Signal Processing System")
     print("=" * 80)
-    print("1️⃣  基础分析演示      - Basic Analysis Demo (examples/basic_analysis_demo.py)")
-    print("2️⃣  窗函数比较演示    - Window Function Comparison Demo (examples/window_comparison_demo.py)")
-    print("3️⃣  端点检测演示      - Endpoint Detection Demo (examples/endpoint_detection_demo.py)")
-    print("4️⃣  完整分析流程演示  - Complete Analysis Pipeline Demo (examples/speech_analysis_demo.py)")
-    print("5️⃣  语音识别演示      - Speech Recognition Demo (examples/speech_recognition_demo.py)")
-    print("6️⃣  分类器对比演示    - Classifier Comparison Demo (examples/classifier_comparison_demo.py)")
+    print("1️⃣  基础分析演示      - Basic Analysis Demo (examples/analysis/basic_demo.py)")
+    print("2️⃣  窗函数比较演示    - Window Function Comparison Demo (examples/analysis/window_demo.py)")
+    print("3️⃣  端点检测演示      - Endpoint Detection Demo (examples/detection/endpoint_demo.py)")
+    print("4️⃣  完整分析流程演示  - Complete Analysis Pipeline Demo (examples/analysis/speech_demo.py)")
+    print("5️⃣  语音识别演示      - Speech Recognition Demo (examples/recognition/speech_demo.py)")
+    print("6️⃣  分类器对比演示    - Classifier Comparison Demo (examples/recognition/classifier_demo.py)")
     print("7️⃣  运行测试          - Run Tests (tests/)")
     print("8️⃣  查看帮助          - Show Help")
     print("0️⃣  退出程序          - Exit Program")
@@ -47,7 +50,7 @@ def print_menu():
 
 def check_audio_files():
     """检查音频文件"""
-    audio_dirs = ["data/audio/input", "data/audio/training", "data/audio/testing"]
+    audio_dirs = ["data/audio/samples", "data/train", "data/test"]
     all_wav_files = []
     
     for audio_dir in audio_dirs:
@@ -67,9 +70,9 @@ def select_audio_file(wav_files):
     if not wav_files:
         print("在音频目录下没有找到WAV文件")
         print("请将WAV文件放在以下目录之一:")
-        print("- data/audio/input/ (待处理文件)")
-        print("- data/audio/training/ (训练文件)")
-        print("- data/audio/testing/ (测试文件)")
+        print("- data/audio/samples/ (音频样本)")
+        print("- data/train/ (训练文件)")
+        print("- data/test/ (测试文件)")
         return None
     
     if len(wav_files) == 1:
@@ -101,12 +104,12 @@ def basic_analysis():
         sys.path.append("examples/analysis")
         
         # 导入并运行基础分析示例
-        from basic_analysis_demo import basic_analysis_example
+        from basic_demo import basic_analysis_example
         basic_analysis_example()
         
     except ImportError as e:
         print(f"无法导入基础分析示例: {e}")
-        print("请确保examples/basic_analysis_demo.py文件存在")
+        print("请确保examples/analysis/basic_demo.py文件存在")
     except Exception as e:
         print(f"运行基础分析示例时出现错误: {e}")
 
@@ -119,12 +122,12 @@ def window_comparison():
     try:
         # 运行窗函数比较示例
         sys.path.append("examples/analysis")
-        from window_comparison_demo import window_comparison_example
+        from window_demo import window_comparison_example
         window_comparison_example()
         
     except ImportError as e:
         print(f"无法导入窗函数比较示例: {e}")
-        print("请确保examples/window_comparison_demo.py文件存在")
+        print("请确保examples/analysis/window_demo.py文件存在")
     except Exception as e:
         print(f"窗函数比较过程中出现错误: {e}")
 
@@ -136,13 +139,13 @@ def endpoint_detection():
     
     try:
         # 运行端点检测示例
-        sys.path.append("examples/analysis")
-        from endpoint_detection_demo import endpoint_detection_demo
+        sys.path.append("examples/detection")
+        from endpoint_demo import endpoint_detection_demo
         endpoint_detection_demo()
         
     except ImportError as e:
         print(f"无法导入端点检测示例: {e}")
-        print("请确保examples/endpoint_detection_demo.py文件存在")
+        print("请确保examples/detection/endpoint_demo.py文件存在")
     except Exception as e:
         print(f"端点检测过程中出现错误: {e}")
 
@@ -155,7 +158,7 @@ def complete_analysis():
     try:
         # 运行完整分析示例
         sys.path.append("examples/analysis")
-        from speech_analysis_demo import SpeechAnalysisDemo
+        from speech_demo import SpeechAnalysisDemo
         
         demo = SpeechAnalysisDemo()
         analysis_result = demo.run_complete_analysis()
@@ -174,7 +177,7 @@ def complete_analysis():
         
     except ImportError as e:
         print(f"无法导入完整分析示例: {e}")
-        print("请确保examples/speech_analysis_demo.py文件存在")
+        print("请确保examples/analysis/speech_demo.py文件存在")
     except Exception as e:
         print(f"完整分析过程中出现错误: {e}")
 
@@ -186,14 +189,14 @@ def speech_recognition():
     
     try:
         # 运行语音识别演示
-        sys.path.append("examples/analysis")
-        from speech_recognition_demo import speech_recognition_demo
+        sys.path.append("examples/recognition")
+        from speech_demo import speech_recognition_demo
         
         speech_recognition_demo()
         
     except ImportError as e:
         print(f"无法导入语音识别示例: {e}")
-        print("请确保examples/speech_recognition_demo.py文件存在")
+        print("请确保examples/recognition/speech_demo.py文件存在")
     except Exception as e:
         print(f"语音识别过程中出现错误: {e}")
 
@@ -205,14 +208,14 @@ def classifier_comparison():
     
     try:
         # 运行分类器对比演示
-        sys.path.append("examples/analysis")
-        from classifier_comparison_demo import classifier_comparison_demo
+        sys.path.append("examples/recognition")
+        from classifier_demo import classifier_comparison_demo
         
         classifier_comparison_demo()
         
     except ImportError as e:
         print(f"无法导入分类器对比示例: {e}")
-        print("请确保examples/classifier_comparison_demo.py文件存在")
+        print("请确保examples/recognition/classifier_demo.py文件存在")
     except Exception as e:
         print(f"分类器对比分析过程中出现错误: {e}")
 
@@ -225,8 +228,8 @@ def run_tests():
     try:
         # 运行WAV读取测试
         sys.path.append("tests")
-        from test_wav_reader import test_wav_reader
-        from test_frame_processor import test_frame_processor, test_window_functions
+        from test_wav import test_wav_reader
+        from test_frame import test_frame_processor, test_window_functions
         
         print("运行WAV读取测试...")
         test_wav_reader()
@@ -245,20 +248,20 @@ def show_help():
     """显示帮助信息"""
     print("\n--- 帮助信息 | Help Information ---")
     print("本系统提供以下功能 | This system provides the following features:")
-    print("1️⃣  基础分析演示      - Basic Analysis Demo (examples/basic_analysis_demo.py)")
-    print("2️⃣  窗函数比较演示    - Window Function Comparison Demo (examples/window_comparison_demo.py)")
-    print("3️⃣  端点检测演示      - Endpoint Detection Demo (examples/endpoint_detection_demo.py)")
-    print("4️⃣  完整分析流程演示  - Complete Analysis Pipeline Demo (examples/speech_analysis_demo.py)")
-    print("5️⃣  语音识别演示      - Speech Recognition Demo (examples/speech_recognition_demo.py)")
-    print("6️⃣  分类器对比演示    - Classifier Comparison Demo (examples/classifier_comparison_demo.py)")
+    print("1️⃣  基础分析演示      - Basic Analysis Demo (examples/analysis/basic_demo.py)")
+    print("2️⃣  窗函数比较演示    - Window Function Comparison Demo (examples/analysis/window_demo.py)")
+    print("3️⃣  端点检测演示      - Endpoint Detection Demo (examples/detection/endpoint_demo.py)")
+    print("4️⃣  完整分析流程演示  - Complete Analysis Pipeline Demo (examples/analysis/speech_demo.py)")
+    print("5️⃣  语音识别演示      - Speech Recognition Demo (examples/recognition/speech_demo.py)")
+    print("6️⃣  分类器对比演示    - Classifier Comparison Demo (examples/recognition/classifier_demo.py)")
     print("7️⃣  运行测试          - Run Tests (tests/)")
     print("8️⃣  查看帮助          - Show Help")
     print("0️⃣  退出程序          - Exit Program")
     print("\n使用说明 | Usage Instructions:")
     print("- 将WAV文件放在以下目录之一 | Place WAV files in one of the following directories:")
-    print("  * data/audio/input/ (待处理文件) | data/audio/input/ (files to process)")
-    print("  * data/audio/training/ (训练文件) | data/audio/training/ (training files)")
-    print("  * data/audio/testing/ (测试文件) | data/audio/testing/ (testing files)")
+    print("  * data/audio/samples/ (音频样本) | data/audio/samples/ (audio samples)")
+    print("  * data/train/ (训练文件) | data/train/ (training files)")
+    print("  * data/test/ (测试文件) | data/test/ (testing files)")
     print("- 系统会自动检测并列出可用的音频文件 | System will auto-detect and list available audio files")
     print("- 选择相应的功能进行分析 | Select corresponding function for analysis")
     print("- 分析结果会显示在屏幕上，并可保存到 data/audio/results 目录 | Results displayed on screen and saved to data/audio/results")

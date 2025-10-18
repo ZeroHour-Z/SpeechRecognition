@@ -57,9 +57,9 @@ class SimpleDigitRecognizer:
         analysis_result = self.time_analyzer.analyze_signal(main_segment, 'hamming')
         
         # 计算统计特征
-        energy = analysis_result['energy']
-        amplitude = analysis_result['amplitude']
-        zcr = analysis_result['zcr']
+        energy = analysis_result['short_time_energy']
+        amplitude = analysis_result['average_amplitude']
+        zcr = analysis_result['zero_crossing_rate']
         
         features = {
             'max_energy': np.max(energy),
