@@ -2,12 +2,10 @@
 
 基于时域分析的孤立字语音识别系统，实现WAV文件读取、分帧加窗、时域特征提取、端点检测和数字识别功能。
 
-**开发团队**：周湛昊、张振鑫、孙鑫磊、王毅  
-**开发环境**：Python 3.8 + Conda  
-**测试平台**：Linux Ubuntu + Windows 11  
+**开发**：周湛昊、张振鑫、孙鑫磊、王毅  
 **最后更新**：2025-10-18
 
-## 🚀 快速开始
+## 快速开始
 
 ### 环境配置
 
@@ -79,9 +77,6 @@ conda install pyaudio
 
 ![时间对比](data/results/comparison/time_comparison.png)
 *训练时间、测试时间和平均预测时间对比*
-
-![混淆矩阵](data/results/comparison/confusion_matrix_svm.png)
-*SVM分类器的混淆矩阵 - 最佳性能(F1-Score: 0.465)*
 
 </div>
 
@@ -207,7 +202,7 @@ python examples/recognition/speech_demo.py
 python examples/experiments/run_experiments.py
 ```
 
-## 📚 文档
+## 文档
 
 - **[GUI使用说明](docs/GUI_README.md)** - 图形界面使用教程
 - **[数据目录说明](data/README.md)** - 数据组织结构

@@ -95,9 +95,4 @@ Thumbs.db
 # *.flac
 
 # Results and outputs
-data/results/
 data/audio/output/
-*.png
-*.jpg
-*.jpeg
-*.pdf

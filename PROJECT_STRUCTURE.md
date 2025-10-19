@@ -24,8 +24,6 @@ SpeechRecognition/
 │   ├── 📁 test/                # 测试数据
 │   └── README.md               # 数据说明
 ├── 📁 docs/                    # 文档目录
-│   ├── GUI_README.md           # GUI使用说明
-│   └── 第一周实验周报.md       # 实验报告
 ├── 📁 examples/                # 示例程序
 │   ├── 📁 analysis/            # 信号分析示例
 │   ├── 📁 detection/           # 端点检测示例
@@ -48,13 +46,7 @@ SpeechRecognition/
 ├── 📁 tests/                   # 测试代码
 │   ├── test_frame.py           # 分帧测试
 │   └── test_wav.py             # WAV读取测试
-├── 📁 paper/                   # 学术论文目录
-│   ├── paper.tex               # LaTeX源文件
-│   ├── paper.pdf               # 论文PDF
-│   ├── acmart.cls              # ACM模板类文件
-│   ├── acmart-taps.sty         # ACM样式文件
-│   ├── system_architecture.png # 系统架构图
-│   └── README.md               # 论文说明文档
+├── 📁 paper/                   # 论文目录
 ├── 📄 requirements.txt         # Python依赖
 ├── 📄 LICENSE                  # 许可证
 ├── 📄 README.md                # 项目说明
@@ -94,18 +86,23 @@ SpeechRecognition/
 ## 数据组织
 
 ### 训练数据 (data/train/)
+
 按数字0-9分类存储的音频文件，每个数字包含多个发音样本。
 
 ### 测试数据 (data/test/)
+
 用于测试和验证的音频样本。
 
 ### 音频样本 (data/audio/samples/)
+
 各种测试音频文件，包括不同频率的纯音和语音样本。
 
 ## 配置文件
 
 ### config/config.py
+
 包含系统的默认参数配置：
+
 - 分帧参数（帧长、帧移）
 - 窗函数类型
 - 端点检测阈值
@@ -115,7 +112,9 @@ SpeechRecognition/
 ## 构建系统
 
 ### build/
+
 包含用于打包和分发应用程序的脚本：
+
 - **build.py**: 主要的构建脚本
 - **app.spec**: PyInstaller配置文件
 - **build.bat**: Windows批处理构建脚本
@@ -124,10 +123,12 @@ SpeechRecognition/
 ## 文档
 
 ### docs/
+
 - **GUI_README.md**: 图形界面使用说明
 - **第一周实验周报.md**: 实验进展报告
 
 ### 论文
+
 - **paper.tex**: LaTeX源文件
 - **paper.pdf**: 编译后的PDF论文
 - **system_architecture.png**: 系统架构图
