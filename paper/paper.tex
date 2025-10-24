@@ -8,6 +8,8 @@
 \usepackage{xcolor}
 \usepackage{url}
 \usepackage{xeCJK}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
 \setCJKmainfont{Noto Serif CJK SC}
 
 % ACM格式配置
@@ -119,27 +121,61 @@
 
 \section{方法}
 
-\subsection{系统架构}
+\subsection{系统处理流程}
 
-本文提出的语音识别系统采用模块化设计，主要包括以下组件：
-
-\begin{enumerate}
-\item \textbf{音频预处理模块}: 负责WAV文件读取、格式转换和预处理
-\item \textbf{窗函数处理模块}：应用汉明窗、海宁窗或矩形窗进行信号加窗
-\item \textbf{特征提取模块}：计算短时能量、过零率和平均幅度等时域特征
-\item \textbf{端点检测模块}：基于双门限算法检测语音段边界
-\item \textbf{分类识别模块}：使用模板匹配算法进行语音识别
-\item \textbf{用户界面模块}：提供命令行和图形用户界面
-\end{enumerate}
-
-系统架构如图\ref{fig:system_architecture}所示。
+本文提出的语音识别系统采用模块化设计，整个处理流程如图\ref{fig:processing_flow}所示。
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.5\textwidth]{system_architecture.png}
-\caption{语音识别系统架构图}
-\label{fig:system_architecture}
+\begin{tikzpicture}[node distance=1.2cm, auto, scale=0.5]
+    % 定义节点样式
+    \tikzstyle{process} = [rectangle, minimum width=1.5cm, minimum height=0.6cm, text centered, draw=black, fill=blue!20, font=\tiny]
+    \tikzstyle{decision} = [diamond, minimum width=0.8cm, minimum height=0.4cm, text centered, draw=black, fill=yellow!20, font=\tiny]
+    \tikzstyle{startend} = [ellipse, minimum width=1.2cm, minimum height=0.6cm, text centered, draw=black, fill=green!20, font=\tiny]
+    \tikzstyle{arrow} = [thick,->,>=stealth]
+
+    % 定义节点
+    \node (start) [startend] {开始};
+    \node (input) [process, below of=start] {音频输入};
+    \node (preprocess) [process, below of=input] {音频预处理};
+    \node (window) [process, below of=preprocess] {窗函数处理};
+    \node (feature) [process, below of=window] {特征提取};
+    \node (endpoint) [process, below of=feature] {端点检测};
+    \node (decision) [decision, below of=endpoint, yshift=-0.5cm] {是否检测到语音段？};
+    \node (classify) [process, right of=decision, xshift=2cm] {分类识别};
+    \node (output) [process, above of=classify] {输出识别结果};
+    \node (end) [startend, above of=output] {结束};
+    \node (continue) [process, left of=decision, xshift=-2cm] {继续检测};
+
+    % 绘制箭头
+    \draw [arrow] (start) -- (input);
+    \draw [arrow] (input) -- (preprocess);
+    \draw [arrow] (preprocess) -- (window);
+    \draw [arrow] (window) -- (feature);
+    \draw [arrow] (feature) -- (endpoint);
+    \draw [arrow] (endpoint) -- (decision);
+    \draw [arrow] (decision) -- node[anchor=south] {是} (classify);
+    \draw [arrow] (decision) -- node[anchor=south] {否} (continue);
+    \draw [arrow] (continue) -- (endpoint);
+    \draw [arrow] (classify) -- (output);
+    \draw [arrow] (output) -- (end);
+\end{tikzpicture}
+\caption{语音识别系统处理流程图}
+\label{fig:processing_flow}
 \end{figure}
+
+系统主要处理步骤包括：
+
+\begin{enumerate}
+\item \textbf{音频输入}：接收音频信号输入
+\item \textbf{音频预处理}：WAV文件读取、格式转换和预处理
+\item \textbf{窗函数处理}：应用汉明窗、海宁窗或矩形窗进行信号加窗
+\item \textbf{特征提取}：计算短时能量、过零率和平均幅度等时域特征
+\item \textbf{端点检测}：基于双门限算法检测语音段边界
+\item \textbf{分类识别}：使用模板匹配算法进行语音识别
+\item \textbf{结果输出}：输出识别结果
+\end{enumerate}
+
 
 \subsection{时域特征提取}
 
