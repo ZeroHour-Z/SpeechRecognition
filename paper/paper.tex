@@ -248,15 +248,15 @@ d = \sqrt{\sum_{i=1}^{N} (f_i - t_i)^2}
 
 实验使用自建的数字语音数据集，包含数字0-9的语音样本。数据集分为训练集和测试集，每个数字包含多个发音样本。音频文件采用16kHz采样率，16位量化，单声道格式。
 
-\subsection{实验设置}
+% \subsection{实验设置}
 
-实验在以下环境中进行：
-\begin{itemize}
-\item 操作系统：Linux Ubuntu 20.04
-\item Python版本：3.8
-\item 主要依赖：NumPy, SciPy, scikit-learn, PyTorch
-\item 硬件配置：Intel i7处理器，16GB内存
-\end{itemize}
+% 实验在以下环境中进行：
+% \begin{itemize}
+% \item 操作系统：Linux Ubuntu 20.04
+% \item Python版本：3.8
+% \item 主要依赖：NumPy, SciPy, scikit-learn, PyTorch
+% \item 硬件配置：Intel i7处理器，16GB内存
+% \end{itemize}
 
 \subsection{实验结果}
 
@@ -336,25 +336,25 @@ d = \sqrt{\sum_{i=1}^{N} (f_i - t_i)^2}
 
 为了验证所提方法的有效性，我们与现有的语音识别方法进行了对比实验，结果如表\ref{tab:method_comparison}所示。
 
-\begin{table}[htbp]
-\caption{不同语音识别方法性能对比}
-\label{tab:method_comparison}
-\begin{center}
-\begin{tabular}{lccc}
-\toprule
-\textbf{方法} & \textbf{准确率(\%)} & \textbf{时间(ms)} & \textbf{内存(MB)} \\
-\midrule
-MFCC + HMM & 92.1 & 156.8 & 45.2 \\
-MFCC + SVM & 89.7 & 89.3 & 32.1 \\
-频域特征 + DTW & 78.4 & 234.6 & 28.7 \\
-\midrule
-\textbf{本文方法} & \textbf{87.3} & \textbf{76.9} & \textbf{2.0} \\
-\bottomrule
-\end{tabular}
-\end{center}
-\end{table}
+% \begin{table}[htbp]
+% \caption{不同语音识别方法性能对比}
+% \label{tab:method_comparison}
+% \begin{center}
+% \begin{tabular}{lccc}
+% \toprule
+% \textbf{方法} & \textbf{准确率(\%)} & \textbf{时间(ms)} & \textbf{内存(MB)} \\
+% \midrule
+% MFCC + HMM & 92.1 & 156.8 & 45.2 \\
+% MFCC + SVM & 89.7 & 89.3 & 32.1 \\
+% 频域特征 + DTW & 78.4 & 234.6 & 28.7 \\
+% \midrule
+% \textbf{本文方法} & \textbf{87.3} & \textbf{76.9} & \textbf{2.0} \\
+% \bottomrule
+% \end{tabular}
+% \end{center}
+% \end{table}
 
-从表\ref{tab:method_comparison}可以看出，虽然本文方法在准确率上略低于基于MFCC的传统方法，但在计算效率和内存占用方面具有显著优势，更适合资源受限的实时应用场景。
+% 从表\ref{tab:method_comparison}可以看出，虽然本文方法在准确率上略低于基于MFCC的传统方法，但在计算效率和内存占用方面具有显著优势，更适合资源受限的实时应用场景。
 
 \subsubsection{消融实验}
 
@@ -692,7 +692,7 @@ KNN (k=3) & 85.6 & 0.1 & 4.2 \\
 
 \section*{致谢}
 
-感谢所有参与本项目的团队成员，以及提供技术支持和宝贵建议的同事们。
+感谢所有参与本项目的团队成员。
 
 \begin{thebibliography}{9}
 
