@@ -43,12 +43,12 @@ sudo apt install portaudio19-dev python3-pyaudio python3-pyqt5
 
 #### Qt图形界面（推荐）
 ```bash
-python run_gui_universal.py
+python apps/run_gui.py
 ```
 
 #### 命令行界面
 ```bash
-python main.py
+python apps/main.py
 ```
 
 ## 🎮 界面使用指南
@@ -123,31 +123,6 @@ python main.py
 - **特征**: 11种时域特征自动提取
 - **置信度**: 识别结果可靠性评估
 
-## 📁 文件结构
-
-```
-SpeechRecognition/
-├── qt_interface.py          # Qt主界面
-├── run_gui_universal.py      # 跨平台GUI启动器
-├── main.py                  # 命令行界面
-├── speech_processing/        # 核心处理包
-│   ├── core/
-│   │   ├── audio_recorder.py  # 新增：录音功能
-│   │   ├── wav_reader.py
-│   │   ├── frame_window.py
-│   │   ├── time_domain_analysis.py
-│   │   └── endpoint_detection.py
-│   ├── recognition/
-│   └── utils/
-├── examples/                # 示例程序
-├── data/                    # 数据目录
-│   ├── audio/               # 音频文件
-│   ├── results/             # 分析结果
-│   ├── train/               # 训练数据
-│   └── test/                # 测试数据
-└── requirements.txt         # 依赖包列表
-```
-
 ## 🐛 常见问题
 
 ### 1. 无法启动Qt界面
@@ -167,10 +142,6 @@ conda install pyqt
 ```bash
 # Linux系统
 sudo apt install portaudio19-dev python3-pyaudio
-
-# macOS系统
-brew install portaudio
-pip install pyaudio
 ```
 
 ### 3. 音频设备问题
@@ -213,24 +184,4 @@ pip install pyaudio
 - 使用高质量的录音设备
 - 保持一致的录音环境
 - 充足的训练数据
-
-## 🔄 更新日志
-
-### v1.1.0 (新增Qt界面)
-- ✨ 新增Qt图形界面
-- 🎤 新增实时录音功能
-- 📊 新增可视化分析结果
-- 🔧 新增参数调节界面
-- 📝 新增实时日志显示
-
-### v1.0.0 (基础版本)
-- 🎯 基础语音信号处理功能
-- 🧠 简单数字识别器
-- 📊 命令行界面
-- 📚 完整示例程序
-
 ---
-
-**开发团队**: DSP Lab  
-**最后更新**: 2025年1月  
-**技术支持**: 查看项目README.md获取更多信息

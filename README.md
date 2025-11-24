@@ -3,7 +3,6 @@
 基于时域分析的孤立字语音识别系统，实现WAV文件读取、分帧加窗、时域特征提取、端点检测和数字识别功能。
 
 **开发**：周湛昊、张振鑫、孙鑫磊、王毅  
-**最后更新**：2025-10-18
 
 ## 快速开始
 
@@ -38,14 +37,38 @@ python apps/run_gui.py
 
 # 命令行界面
 python apps/main.py
+
+# MFCC 频域分析
+python examples/analysis/mfcc_demo.py
+
+# DTW 算法演示
+python examples/recognition/dtw_mfcc_demo.py
+
+# 单独运行识别演示
+python -c "from examples.recognition.dtw_mfcc_demo import mfcc_dtw_recognition_demo; mfcc_dtw_recognition_demo()"
 ```
 
 ### 系统要求
 
 - **Python**: 3.8+
-- **操作系统**: Linux (推荐), Windows, macOS
+- **操作系统**: Linux (推荐), Windows
 - **内存**: 4GB+ RAM
 - **存储**: 1GB+ 可用空间
+
+### 实验环境
+
+本实验在以下环境中完成开发和测试：
+
+#### 开发环境
+- **操作系统**: Linux (Ubuntu/Debian), Windows 10/11
+- **Python 版本**: 3.8 - 3.10
+- **开发工具**: VS Code, PyCharm
+
+#### 核心依赖库
+- **numpy**: >=1.22.0 - 数值计算
+- **scipy**: >=1.10.0 - 科学计算（FFT、DCT、信号处理）
+- **matplotlib**: >=3.4.0 - 数据可视化
+- **scikit-learn**: >=1.3.0 - 机器学习算法
 
 ### 音频系统依赖
 
@@ -116,7 +139,7 @@ conda install pyaudio
 
 ### 信号处理
 - WAV文件读取与解析
-- 分帧加窗（矩形窗、Hamming窗、Hanning窗）
+- 分帧加窗
 - 时域特征提取（短时能量、平均幅度、过零率）
 - 双门限端点检测
 
@@ -126,35 +149,59 @@ conda install pyaudio
 - 6种分类器算法：SVM、神经网络、朴素贝叶斯、KNN、Fisher判别、决策树
 - 批量测试与准确率统计
 
-### 可视化分析
-- 波形图、频谱图
-- 特征曲线图
-- 端点检测结果
-- 识别结果展示
-
 ## 项目结构
 
 ```
-dsp/
-├── src/                      # 核心代码
-│   ├── core/                 # 信号处理模块
-│   ├── recognition/          # 识别算法模块
-│   └── experiments/          # 实验评估模块
-├── apps/                     # 应用程序
-│   ├── main.py               # 命令行界面
-│   └── qt_interface.py       # 图形界面
-├── data/                     # 数据目录
-│   ├── train/                # 训练数据
-│   └── results/              # 实验结果
-├── examples/                 # 示例程序
-├── scripts/                  # 工具脚本
-│   ├── build_exe.py          # 打包脚本
-│   └── generate_*.py         # 实验脚本
-├── config/                   # 配置文件
-│   └── config.py             # 系统配置
-├── docs/                     # 文档
-├── tests/                    # 测试代码
-└── requirements.txt          # 依赖列表
+SpeechRecognition/
+├── src/                          # 核心代码模块
+│   ├── core/                     # 信号处理核心模块
+│   │   ├── wav_reader.py         # WAV文件读取
+│   │   ├── frame_window.py       # 分帧和加窗处理
+│   │   ├── time_domain_analysis.py  # 时域特征分析（实验一）
+│   │   ├── frequency_domain_analysis.py  # 频域分析（实验二：MFCC）
+│   │   ├── endpoint_detection.py # 端点检测
+│   │   └── audio_recorder.py    # 音频录制
+│   ├── recognition/              # 识别算法模块
+│   │   ├── simple_recognizer.py  # 时域特征识别器
+│   │   ├── advanced_recognizer.py  # 高级识别器
+│   │   ├── classifiers.py       # 多种分类器实现
+│   │   ├── dtw.py                # DTW算法（实验三）
+│   │   └── mfcc_dtw_recognizer.py  # MFCC-DTW识别器（实验三）
+│   └── utils/                    # 工具模块
+│       └── plot_config.py        # 绘图配置
+├── apps/                         # 应用程序
+│   ├── main.py                   # 命令行界面
+│   ├── gui_interface.py         # GUI界面主程序
+│   └── run_gui.py               # GUI启动脚本
+├── data/                         # 数据目录
+│   ├── train/                    # 训练数据（digit_0 ~ digit_9）
+│   ├── test/                     # 测试数据（digit_0 ~ digit_9）
+│   ├── audio/                    # 音频样本
+│   │   ├── samples/              # 测试音频样本
+│   │   └── output/               # 输出音频
+│   └── results/                  # 实验结果
+│       ├── comparison/           # 分类器对比结果
+│       ├── ablation/            # 消融实验结果
+│       └── performance/         # 性能测试结果
+├── examples/                    # 示例程序
+│   ├── analysis/                # 信号分析示例
+│   │   ├── basic_demo.py        # 基础分析演示
+│   │   ├── mfcc_demo.py         # MFCC特征提取演示
+│   │   └── window_demo.py       # 窗函数对比演示
+│   ├── detection/               # 端点检测示例
+│   ├── recognition/             # 识别算法示例
+│   │   ├── dtw_mfcc_demo.py     # DTW-MFCC识别演示
+│   │   └── classifier_demo.py   # 分类器演示
+│   ├── experiments/             # 实验评估
+│   │   └── run_experiments.py   # 运行所有实验
+│   └── utils/                   # 工具示例
+├── config/                      # 配置文件
+│   └── config.py                # 系统配置参数
+├── docs/                        # 文档目录
+├── paper/                       # 论文相关
+├── tests/                       # 测试代码
+├── requirements.txt             # 项目依赖
+└── README.md                    # 项目说明文档
 ```
 
 ## 使用说明
@@ -162,9 +209,8 @@ dsp/
 ### 命令行界面
 
 运行 `python apps/main.py` 后可选择：
-
-1. 基础分析 - WAV读取、分帧、时域分析
-2. 窗函数对比 - 不同窗函数效果
+│   ├── test_wav.py              # WAV读取测试
+│   └── test_frame.py            # 分帧测试
 3. 端点检测 - 语音段检测
 4. 完整流程 - 生成分析报告
 5. 语音识别 - 数字识别
@@ -186,9 +232,6 @@ dsp/
 
 实验结果保存在 `data/results/`，包含完整的可视化图表和分析报告。
 
-## 文档导航
-
-- **[实验结果说明](data/results/实验结果说明.md)** - 详细的实验结果和分析
 ## 运行示例
 
 ```bash

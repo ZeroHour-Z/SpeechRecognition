@@ -7,9 +7,11 @@ from .wav_reader import WAVReader
 from .frame_window import FrameProcessor, WindowFunctions
 from .time_domain_analysis import TimeDomainAnalyzer
 from .endpoint_detection import DualThresholdEndpointDetector
+from .frequency_domain_analysis import FrequencyDomainAnalyzer
 
 __all__ = [
     'AudioRecorder', 'RealTimeAnalyzer',
     'WAVReader', 'FrameProcessor', 'WindowFunctions',
-    'TimeDomainAnalyzer', 'DualThresholdEndpointDetector'
+    'TimeDomainAnalyzer', 'DualThresholdEndpointDetector',
+    'FrequencyDomainAnalyzer'
 ]
